@@ -20,10 +20,8 @@ parser = argparse.ArgumentParser(
 )
 
 # adding arguments
-parser.add_argument("-s", "--scrape", action="store_true",
-                    help=f"creates a new dataset of song links called '{dataset_name}' from 'genres.json'. saved to dataset/runs/run_*")
-parser.add_argument("-p", "--preprocess", action="store_true",
-                    help="preprocess the dataset ready for training and testing. if not dataset path is given, the most recent dataset run is used.")
+parser.add_argument("-s", "--scrape", action="store_true", help=f"creates a new dataset of song links called '{dataset_name}' from 'genres.json'. saved to dataset/runs/run_*")
+parser.add_argument("-p", "--preprocess", action="store_true", help="preprocess the dataset ready for training and testing. if not dataset path is given, the most recent dataset run is used.")
 parser.add_argument("-l", "--load", help="loads a dataset")
 parser.add_argument("-i", "--info", action="store_true", help="gets the info of the most recent dataset run, or the dataset specified with '-l'")
 
@@ -110,11 +108,11 @@ def main(args):
             print(f"* standard deviation of genre size: {console_utils.bcolors.OKBLUE}{round(std_dev, 3)}{console_utils.bcolors.ENDC}")
             print(f"* variance of genre size: {console_utils.bcolors.OKBLUE}{round(var, 3)}{console_utils.bcolors.ENDC}")
             print(f"* uniqueness: {console_utils.bcolors.OKBLUE}{round((1 - common_percent) * 100, 3)}%{console_utils.bcolors.ENDC} - {console_utils.bcolors.OKBLUE}{common}{console_utils.bcolors.ENDC} shared songs between different genres")
-            print("\t└─ percentage of songs seen in other genres:")
+            print("└─ percentage of songs seen in other genres:")
             for genre, common_count in genres.items():
                 if len(data_set[genre]) > 0:
                     percent = round((common_count / len(data_set[genre])) * 100, 3)
-                    print(f"\t\t- {genre} - {percent}%")
+                    print(f"\t- {genre} - {percent}%")
 
     # preprocessing the dataset
     if args.preprocess:
