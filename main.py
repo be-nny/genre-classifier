@@ -3,7 +3,9 @@ import json
 import os
 import argparse
 
+import utils.console_utils
 from utils import project_utils
+from utils import console_utils
 from scraper.scraper import get_songs
 from scraper.song_downloader import download_genre
 
@@ -53,7 +55,7 @@ def cleanup_batch(path):
 def main(args):
     # creating a new dataset
     if args.scrape:
-        print("\n--creating new dataset--")
+        print(f"\n{console_utils.bcolors.HEADER}--creating new dataset--{console_utils.bcolors.ENDC}")
 
         # creating new run directory
         run_number = len(os.listdir(run_dir)) + 1
@@ -69,19 +71,19 @@ def main(args):
         # getting the songs
         total_songs, avg_time = get_songs(genre_links_path)
 
-        print("\nfinished!")
+        print(f"\n{console_utils.bcolors.OKGREEN}finished!{console_utils.bcolors.ENDC}")
         print(f"├─ finish time: {datetime.datetime.now()}")
         print(f"└─ total songs: {total_songs}, avg time: {avg_time} mins")
 
     # loading the dataset
     # if -l not set, uses the last run's dataset
-    print("\n--loading dataset--")
+    print(f"\n{console_utils.bcolors.HEADER}--loading dataset--{console_utils.bcolors.ENDC}")
     if args.load and not args.scrape:
         if not os.path.exists(args.load):
-            print(f"\t* '{args.load}' doesn't exist")
+            print(f"{console_utils.bcolors.FAIL}* '{args.load}' doesn't exist{console_utils.bcolors.ENDC}")
             return
         if not os.path.isdir(args.load):
-            print(f"\t* '{args.load}' must be a directory")
+            print(f"{console_utils.bcolors.FAIL}* '{args.load}' must be a directory{console_utils.bcolors.ENDC}")
             return
 
         run_path = args.load
@@ -92,7 +94,7 @@ def main(args):
         dir_name = f"run_{str(run_number)}"
         run_path = os.path.join(run_dir, dir_name)
 
-        print(f"└─ using defaults. loaded '{run_path}' (last 'run' session)")
+        print(f"└─ {console_utils.bcolors.WARNING}using defaults{console_utils.bcolors.ENDC}. loaded '{run_path}' (last 'run' session)")
 
     # getting dataset info
     if args.info:
@@ -101,28 +103,24 @@ def main(args):
             data_set = json.load(json_file)
             sample_size, mean, std_dev, var, common, common_percent, genres = project_utils.dataset_info(data_set)
 
-            print("\n--dataset info--")
-            print(f"'{dataset_name}'...")
-            print(f"* sample size: {sample_size}")
-            print(f"* mean genre size: {round(mean, 3)}")
-            print(f"* standard deviation of genre size: {round(std_dev, 3)}")
-            print(f"* variance of genre size: {round(var, 3)}")
-            print(f"* uniqueness: {round((1 - common_percent) * 100, 3)}% - {common} shared songs between different genres")
+            print(f"\n{console_utils.bcolors.HEADER}--dataset info--{console_utils.bcolors.ENDC}")
+            print(f"{console_utils.bcolors.OKGREEN}'{dataset_name}'{console_utils.bcolors.ENDC}...")
+            print(f"* sample size: {console_utils.bcolors.OKBLUE}{sample_size}{console_utils.bcolors.ENDC}")
+            print(f"* mean genre size: {console_utils.bcolors.OKBLUE}{round(mean, 3)}{console_utils.bcolors.ENDC}")
+            print(f"* standard deviation of genre size: {console_utils.bcolors.OKBLUE}{round(std_dev, 3)}{console_utils.bcolors.ENDC}")
+            print(f"* variance of genre size: {console_utils.bcolors.OKBLUE}{round(var, 3)}{console_utils.bcolors.ENDC}")
+            print(f"* uniqueness: {console_utils.bcolors.OKBLUE}{round((1 - common_percent) * 100, 3)}%{console_utils.bcolors.ENDC} - {console_utils.bcolors.OKBLUE}{common}{console_utils.bcolors.ENDC} shared songs between different genres")
             print("\t└─ percentage of songs seen in other genres:")
             for genre, common_count in genres.items():
                 if len(data_set[genre]) > 0:
                     percent = round((common_count / len(data_set[genre])) * 100, 3)
                     print(f"\t\t- {genre} - {percent}%")
 
-    # preprocessing the datset
+    # preprocessing the dataset
     if args.preprocess:
-        print("\n--pre-processing dataset--")
+        print(f"\n{console_utils.bcolors.HEADER}--pre-processing dataset--{console_utils.bcolors.ENDC}")
 
 
 if __name__ == "__main__":
     args = parser.parse_args()
     main(args)
-
-    # with open("datasets/scraper_runs/run_1/genre-links.json", "r") as json_file:
-    #     data_set = json.load(json_file)
-    #     sample_size, mean, std_dev, var = scraper_utils.dataset_info(data_set)
