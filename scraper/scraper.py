@@ -14,7 +14,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
-from scraper.scraper_utils import print_progress_bar
+from utils.project_utils import print_progress_bar
 
 sc_search_playlist = "https://soundcloud.com/search/sets?q="
 sc_url = "https://soundcloud.com"
@@ -26,7 +26,6 @@ def write_json(path, data):
 
 
 def get_songs(genre_links):
-    print("started: getting song links")
     with open(genres) as genre_data:
         data = json.load(genre_data)
         genre_links_dict = {}
@@ -39,8 +38,7 @@ def get_songs(genre_links):
             start_time = time.time()
 
             print_progress_bar(i, total_genres)
-            print()
-            print(f"\t- getting songs for: '{genre['name']}' - PROCESSING")
+            print(f" - getting songs for: '{genre['name']}' - PROCESSING")
 
             genre_format = genre["name"].replace(" ", "-").lower()
             genre_playlist_links = get_playlist_links(genre["name"])
@@ -58,10 +56,9 @@ def get_songs(genre_links):
 
             i += 1
             print(f"\t- getting songs for: '{genre['name']}' - COMPLETE with {len(genre_songs)} songs. total songs: {total_songs}. estimated time remaining: {avg_time_mins * (total_genres - i)} mins")
+            print()
             break
-    print()
-    print("finished: getting song links")
-    print(f"total songs: {total_songs}, avg time: {avg_time_mins} mins")
+    return total_songs, avg_time_mins
 
 def get_options():
     chrome_options = Options()
