@@ -9,11 +9,11 @@ def print_progress_bar(iteration: int, total: int, length=40, indent="") -> None
     """
     Prints a progress bar on the same line.
 
-    :param iteration: process along the loading bar
-    :param total: total iterations for a complete loading bar
-    :param length: total length in characters
-    :param indent: ident char at the beginning
-    :return:
+    Args:
+        iteration (int): process along the loading bar
+        total (int): total iterations for a complete loading bar
+        length (int): total length in characters
+        indent (str): ident char at the beginning
     """
 
     percent = (iteration / total) * 100
@@ -26,10 +26,13 @@ def print_progress_bar(iteration: int, total: int, length=40, indent="") -> None
 def dataset_info(data_set: dict) -> (float, float, float, float):
     """
     Returns the sample size, mean, standard deviation, variance, uniqueness, common songs, common songs as
-    a percent and the genres that the common songs occur in a data set
+    a percent and the genres that the common songs occur in a data set.
 
-    :param data_set: the genre data set
-    :return: sample size, mean, standard deviation, variance, common, common_percent, genres
+    Args:
+        data_set (dict): the genre data set
+
+    Returns:
+        Sample size, mean, standard deviation, variance, common, common_percent, genres
     """
 
     sample_size = sum(samples(data_set))
@@ -43,10 +46,13 @@ def dataset_info(data_set: dict) -> (float, float, float, float):
 
 def samples(data: dict) -> list:
     """
-    Returns the number of songs per genre as a 1D list
+    Returns the number of songs per genre as a 1D list.
 
-    :param data: genre data set
-    :return: array of the number of songs per genre
+    Args:
+        data (dict): genre data set
+
+    Returns:
+        Array of the number of songs per genre
     """
 
     return np.array([len(val) for val in data.values()])
@@ -54,10 +60,13 @@ def samples(data: dict) -> list:
 
 def mean_sample_size(data: dict) -> float:
     """
-    Gets the mean number of songs per genre
+    Gets the mean number of songs per genre.
 
-    :param data: genre dataset
-    :return: mean number of songs per genre
+    Args:
+        data (dict): genre dataset
+
+    Returns:
+        Mean number of songs per genre
     """
 
     vals = samples(data)
@@ -69,8 +78,11 @@ def standard_deviation(data: dict) -> float:
     """
     Gets the standard deviation of the number of samples per genre
 
-    :param data: genre dataset
-    :return: standard deviation of dataset
+    Args:
+        data (dict): genre dataset
+
+    Returns:
+        Standard deviation of dataset
     """
 
     vals = samples(data)
@@ -80,10 +92,13 @@ def standard_deviation(data: dict) -> float:
 
 def variance(data: dict) -> float:
     """
-    Gets the variance of the dataset
+    Gets the variance of the dataset.
 
-    :param data: genre dataset
-    :return: variance of dataset
+    Args:
+        data (dict): genre dataset
+
+    Returns:
+        Variance of dataset
     """
 
     return math.pow(standard_deviation(data), 2)
@@ -93,8 +108,11 @@ def check_common_songs(data: dict) -> (int, float, list):
     """
     Finds the number of shared songs between different genres
 
-    :param data: genre dataset
-    :return: the number of shared songs, the percentage of the total number of songs, the genres which have shared songs
+    Args:
+        data (dict): genre dataset
+
+    Returns:
+        The number of shared songs, the percentage of the total number of songs, the genres which have shared songs
     """
 
     size = sum(samples(data))

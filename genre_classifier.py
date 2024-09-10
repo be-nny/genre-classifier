@@ -3,7 +3,6 @@ import json
 import os
 import argparse
 
-import utils.console_utils
 from utils import project_utils
 from utils import console_utils
 from scraper.scraper import get_songs
@@ -103,16 +102,22 @@ def main(args):
 
             print(f"\n{console_utils.bcolors.HEADER}--dataset info--{console_utils.bcolors.ENDC}")
             print(f"{console_utils.bcolors.OKGREEN}'{dataset_name}'{console_utils.bcolors.ENDC}...")
-            print(f"* sample size: {console_utils.bcolors.OKBLUE}{sample_size}{console_utils.bcolors.ENDC}")
-            print(f"* mean genre size: {console_utils.bcolors.OKBLUE}{round(mean, 3)}{console_utils.bcolors.ENDC}")
-            print(f"* standard deviation of genre size: {console_utils.bcolors.OKBLUE}{round(std_dev, 3)}{console_utils.bcolors.ENDC}")
-            print(f"* variance of genre size: {console_utils.bcolors.OKBLUE}{round(var, 3)}{console_utils.bcolors.ENDC}")
-            print(f"* uniqueness: {console_utils.bcolors.OKBLUE}{round((1 - common_percent) * 100, 3)}%{console_utils.bcolors.ENDC} - {console_utils.bcolors.OKBLUE}{common}{console_utils.bcolors.ENDC} shared songs between different genres")
+
+            # Define the column width for alignment
+            num_width = 15  # Adjust this width to suit your needs
+
+            print(f"* sample size".ljust(50) + f"{console_utils.bcolors.OKBLUE}{sample_size:>{num_width}}{console_utils.bcolors.ENDC}")
+            print(f"* mean genre size".ljust(50) + f"{console_utils.bcolors.OKBLUE}{round(mean, 3):>{num_width}}{console_utils.bcolors.ENDC}")
+            print(f"* standard deviation of genre size".ljust(50) + f"{console_utils.bcolors.OKBLUE}{round(std_dev, 3):>{num_width}}{console_utils.bcolors.ENDC}")
+            print(f"* variance of genre size".ljust(50) + f"{console_utils.bcolors.OKBLUE}{round(var, 3):>{num_width}}{console_utils.bcolors.ENDC}")
+            print(f"* uniqueness".ljust(50) + f"{console_utils.bcolors.OKBLUE}{round((1 - common_percent) * 100, 3):>{num_width}}%{console_utils.bcolors.ENDC}")
+            print(f"\n* {console_utils.bcolors.OKBLUE}{common}{console_utils.bcolors.ENDC} shared songs")
+
             print("└─ percentage of songs seen in other genres:")
             for genre, common_count in genres.items():
                 if len(data_set[genre]) > 0:
                     percent = round((common_count / len(data_set[genre])) * 100, 3)
-                    print(f"\t- {genre} - {percent}%")
+                    print(f"\t- {genre.ljust(30)}{console_utils.bcolors.OKBLUE}{percent:>{num_width}}%{console_utils.bcolors.ENDC}")
 
     # preprocessing the dataset
     if args.preprocess:

@@ -1,8 +1,15 @@
-import json
-
 import yt_dlp
 
 def download_genre(links, genre, path):
+    """
+    Downloads a set of songs associated with a genre.
+
+    Args:
+        links (list): Array of song links
+        genre (str):  Genre name
+        path (str): Path to save downloaded song
+    """
+
     i = 1
     for link in links:
         file_name = genre + f"_{str(i)}"
@@ -16,10 +23,18 @@ def download_genre(links, genre, path):
             'outtmpl': f'{path}/{file_name}.%(ext)s',
         }
 
-        _download_music(link, opts)
+        download_music(link, opts)
         i += 1
 
-def _download_music(url, opts):
+def download_music(url, opts):
+    """
+    Downloads a song given the URL.
+
+    Args:
+        url (str): URL of the song
+        opts (dict): Download options
+    """
+
     try:
         with yt_dlp.YoutubeDL(opts) as downloader:
             downloader.download(url)

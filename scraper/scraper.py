@@ -24,9 +24,11 @@ def write_json(path: str, data: dict):
     """
     Saves the genre-links dictionary to a file.
 
-    :param path: path of the json file
-    :param data: scraped songs
+    Args:
+        path (str): Path of the json file.
+        data (dict): Scraped songs.
     """
+
     with open(path, 'w') as fp:
         json.dump(data, fp, indent=4)
 
@@ -36,7 +38,8 @@ def get_songs(genre_links: str) -> (int, float):
     Uses soundcloud to scrape a series of genres specified in 'genres.json'. The method saves these genres in a
     dictionary of key value pairs of the genre name, and the list of songs as url links.
 
-    :param genre_links: path to save the dictionary
+    Args:
+        genre_links (str): Path to save the dictionary
     """
 
     with open(genres) as genre_data:
@@ -84,7 +87,8 @@ def get_options() -> 'selenium.webdriver.chrome.options':
     - `--disable-software-rasterizer`
     - `--disable-blink-features=AutomationControlled`
 
-    :return: chrome options
+    Returns:
+         chrome options
     """
 
     chrome_options = Options()
@@ -104,11 +108,17 @@ def get_driver(max_retries=5, delay=2) -> 'selenium.webdriver.chrome.webdriver.W
     Context manager for the chrome driver used for webscraping. Effective management of starting and tearing down
     a driver session.
 
-    :param max_retries: number of retries before failing if the driver cannot start.
-    :param delay: time delay in seconds to allow driver to load properly
-    :return: webdriver
-    :raise Exception: when the webdriver fails to start
+    Args:
+        max_retries: number of retries before failing if the driver cannot start.
+        delay: time delay in seconds to allow driver to load properly
+
+    Returns:
+        webdriver (selenium.webdriver.chrome.webdriver.WebDriver): a new web driver
+
+    Raises:
+         Exception: when the webdriver fails to start
     """
+
     # Uncomment the following lines for Raspberry Pi
     # service = Service("/usr/lib/chromium-browser/chromedriver")
 
@@ -140,10 +150,12 @@ def wait_load(element: 'selenium.webdriver.common.by.By', driver: 'selenium.webd
     """
     Waits for an element on a webpage to load. This method is blocking.
 
-    :param element: the webpage element
-    :param driver: chrome driver
-    :param timeout: max. time to wait for element to load
+    Args:
+        element (selenium.webdriver.common.by.By): the webpage element
+        driver (selenium.webdriver.chrome.webdriver.WebDriver): chrome driver
+        timeout (int): max. time to wait for element to load
     """
+
     WebDriverWait(driver, timeout).until(
         EC.presence_of_element_located(element)
     )
@@ -153,8 +165,11 @@ def get_playlist_links(genre: str) -> list:
     """
     Find a list of playlists containing music for that genre.
 
-    :param genre: music genre
-    :return: list of links
+    Args:
+        genre (str): music genre
+
+    Returns:
+        list of links
     """
 
     links = []
@@ -193,8 +208,11 @@ def get_genre_songs(play_list_links: list) -> list:
     """
     With a series of play list links, a list of full URL paths for each song in every playlist will be returned.
 
-    :param play_list_links: get full URL path for each song in a set of playlists
-    :return: a list of the full URL paths of each song for that genre
+    Args:
+        play_list_links (list): get full URL path for each song in a set of playlists
+
+    Returns:
+        a list of the full URL paths of each song for that genre
     """
 
     links = []
@@ -231,8 +249,10 @@ def accept_cookies(driver: 'selenium.webdriver.chrome.webdriver.WebDriver'):
     """
     Accepts a cookie banner (if there is one) on a webpage
 
-    :param driver: chrome driver
+    Args:
+        driver (selenium.webdriver.chrome.webdriver.WebDriver): chrome driver
     """
+
     # Wait until the cookie accept button is clickable
     cookie_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), 'I Accept')]"))
