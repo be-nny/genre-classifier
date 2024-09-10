@@ -109,8 +109,8 @@ def get_driver(max_retries=5, delay=2) -> 'selenium.webdriver.chrome.webdriver.W
     a driver session.
 
     Args:
-        max_retries: number of retries before failing if the driver cannot start.
-        delay: time delay in seconds to allow driver to load properly
+        max_retries (int): number of retries before failing if the driver cannot start.
+        delay (int): time delay in seconds to allow driver to load properly
 
     Returns:
         webdriver (selenium.webdriver.chrome.webdriver.WebDriver): a new web driver
